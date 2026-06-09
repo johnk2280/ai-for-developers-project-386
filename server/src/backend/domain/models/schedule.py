@@ -8,12 +8,29 @@ from uuid import UUID
 from .booking import Booking
 from .event_type import EventType
 from ..base import DomainModel
+from ..exc import InvariantError
 
 
 @dataclass(frozen=True, slots=True)
 class TimeRange:
     start: time
     end: time
+
+    def __post_init__(self) -> None:
+        self._validate_order()
+        self._validate_duration_multiple()
+
+    def _validate_order(self) -> None:
+        if self.start >= self.end:
+            msg = 'start must be before end'
+            raise InvariantError(msg)
+
+    def _validate_duration_multiple(self) -> None:
+        start_min = self.start.hour * 60 + self.start.minute
+        end_min = self.end.hour * 60 + self.end.minute
+        if (end_min - start_min) % 15 != 0:
+            msg = 'duration must be a multiple of 15 minutes'
+            raise InvariantError(msg)
 
 
 @dataclass(frozen=True, slots=True)

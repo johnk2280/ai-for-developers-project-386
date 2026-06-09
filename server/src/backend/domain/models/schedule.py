@@ -38,7 +38,7 @@ class TimeRange:
 class AvailabilityRule:
     owner_id: UUID
     weekday: Literal[0, 1, 2, 3, 4, 5, 6]
-    _periods: list[TimeRange] = field(default_factory=list, hash=False)
+    _periods: set[TimeRange] = field(default_factory=set, hash=False)
 
     def __post_init__(self) -> None:
         self._validate_weekday()
@@ -50,7 +50,7 @@ class AvailabilityRule:
 
     def add_period(self, period: TimeRange) -> None:
         self._validate_no_overlap(period)
-        self._periods.append(period)
+        self._periods.add(period)
 
     def _validate_no_overlap(self, period: TimeRange) -> None:
         for existing in self._periods:
@@ -59,7 +59,7 @@ class AvailabilityRule:
                 raise IllegalStateError(msg)
 
     @property
-    def periods(self) -> list[TimeRange]:
+    def periods(self) -> set[TimeRange]:
         return self._periods
 
 
@@ -67,14 +67,20 @@ class AvailabilityRule:
 class AvailabilityOverride:
     owner_id: UUID
     date: date
-    _periods: list[TimeRange] = field(default_factory=list, hash=False)
+    _periods: set[TimeRange] = field(default_factory=set, hash=False)
 
     def add_period(self, period: TimeRange) -> None:
-        # TODO: добавить валидацию для обеспечения инвариантов
-        self._periods.append(period)
+        self._validate_no_overlap(period)
+        self._periods.add(period)
+
+    def _validate_no_overlap(self, period: TimeRange) -> None:
+        for existing in self._periods:
+            if period.start < existing.end and existing.start < period.end:
+                msg = f'period {period} overlaps with existing {existing}'
+                raise IllegalStateError(msg)
 
     @property
-    def periods(self) -> list[TimeRange]:
+    def periods(self) -> set[TimeRange]:
         return self._periods
 
 

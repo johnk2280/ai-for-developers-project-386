@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from dataclasses import field
+from datetime import UTC
 from datetime import date
+from datetime import datetime
 from datetime import time
 from typing import Literal
 from uuid import UUID
@@ -44,7 +46,7 @@ class AvailabilityRule:
         self._validate_weekday()
 
     def _validate_weekday(self) -> None:
-        if not (0 <= self.weekday < 7):
+        if not (0 <= self.weekday < 7):  # noqa: PLR2004
             msg = 'weekday must be in range 0..6'
             raise InvariantError(msg)
 
@@ -68,6 +70,14 @@ class AvailabilityOverride:
     owner_id: UUID
     date: date
     _periods: set[TimeRange] = field(default_factory=set, hash=False)
+
+    def __post_init__(self) -> None:
+        self._validate_date()
+
+    def _validate_date(self) -> None:
+        if self.date < datetime.now(UTC).date():
+            msg = 'date must be today or in the future'
+            raise InvariantError(msg)
 
     def add_period(self, period: TimeRange) -> None:
         self._validate_no_overlap(period)

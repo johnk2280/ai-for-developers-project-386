@@ -40,6 +40,14 @@ class AvailabilityRule:
     weekday: Literal[0, 1, 2, 3, 4, 5, 6]
     _periods: list[TimeRange] = field(default_factory=list, hash=False)
 
+    def __post_init__(self) -> None:
+        self._validate_weekday()
+
+    def _validate_weekday(self) -> None:
+        if not (0 <= self.weekday < 7):
+            msg = 'weekday must be in range 0..6'
+            raise InvariantError(msg)
+
     def add_period(self, period: TimeRange) -> None:
         self._validate_no_overlap(period)
         self._periods.append(period)

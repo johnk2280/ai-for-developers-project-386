@@ -42,7 +42,7 @@ The backend follows a layered architecture (hexagonal/clean):
 
 - `backend/domain/` — pure domain models and business logic, no framework dependencies
 - `backend/service_layer/` — application use cases / services, orchestrates domain objects
-- `backend/infrastructure/` — DB (SQLAlchemy + asyncpg), external integrations
+- `backend/infrastructure/` — DB (SQLAlchemy + asyncpg), external integrations, entrypoints such as FastAPI app, Celery app, GraphQL app, etc
 - `backend/` — FastAPI app, routes, DI wiring via `dishka`
 
 Dependency injection is handled by **dishka**. Database access is async (asyncpg + SQLAlchemy async session). Migrations are managed with **Alembic**.

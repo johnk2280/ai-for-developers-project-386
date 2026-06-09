@@ -47,6 +47,17 @@ The backend follows a layered architecture (hexagonal/clean):
 
 Dependency injection is handled by **dishka**. Database access is async (asyncpg + SQLAlchemy async session). Migrations are managed with **Alembic**.
 
+## Development Process
+
+Development follows **TDD**: write a failing test first, then implement the minimum code to make it pass, then refactor.
+
+1. Write a failing test
+2. Implement the minimum code to pass it
+3. Refactor if needed
+4. Commit
+
+Never write implementation code without a corresponding test written first.
+
 ## Code Style
 
 - `ruff` enforces style: single quotes, 79-char line length, `select = ["ALL"]` with targeted ignores

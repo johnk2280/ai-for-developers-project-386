@@ -8,6 +8,7 @@ from uuid import UUID
 from .booking import Booking
 from .event_type import EventType
 from ..base import DomainModel
+from ..exc import IllegalStateError
 from ..exc import InvariantError
 
 
@@ -40,8 +41,14 @@ class AvailabilityRule:
     _periods: list[TimeRange] = field(default_factory=list, hash=False)
 
     def add_period(self, period: TimeRange) -> None:
-        # TODO: добавить валидацию для обеспечения инвариантов
+        self._validate_no_overlap(period)
         self._periods.append(period)
+
+    def _validate_no_overlap(self, period: TimeRange) -> None:
+        for existing in self._periods:
+            if period.start < existing.end and existing.start < period.end:
+                msg = f'period {period} overlaps with existing {existing}'
+                raise IllegalStateError(msg)
 
     @property
     def periods(self) -> list[TimeRange]:

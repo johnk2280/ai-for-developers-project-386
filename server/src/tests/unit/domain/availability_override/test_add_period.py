@@ -1,9 +1,10 @@
-# ruff: noqa: PLR2004
+# ruff: noqa: PLR2004, DTZ011
 
 import uuid
 
 from datetime import date
 from datetime import time
+from datetime import timedelta
 
 import pytest
 
@@ -13,7 +14,7 @@ from backend.domain.models.schedule import TimeRange
 
 
 OWNER_ID = uuid.uuid4()
-DATE = date(2026, 6, 9)
+DATE = date.today() + timedelta(days=7)
 
 
 def make_override() -> AvailabilityOverride:

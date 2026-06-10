@@ -10,7 +10,9 @@ from uuid import UUID
 from .booking import Booking
 from .event_type import EventType
 from ..base import DomainModel
+from ..exc import BusinessRuleError
 from ..exc import IllegalStateError
+from ..exc import IntegrityError
 from ..exc import InvariantError
 
 
@@ -110,3 +112,69 @@ class Schedule(DomainModel):
         self._overrides = overrides
         self._booked = booked
         self._event_types = event_types
+
+    @property
+    def pk(self) -> UUID:
+        return self._id
+
+    def add_booking(self, booking: Booking) -> None:
+        self._validate_booking_in_future(booking)
+        self._validate_no_overlap(booking)
+        self._validate_availability(booking)
+        self._validate_event_type_exists(booking)
+        self._validate_duration_matches(booking)
+        self._booked.append(booking)
+
+    def _validate_booking_in_future(self, booking: Booking) -> None:
+        if booking.start <= datetime.now():  # noqa: DTZ005
+            msg = 'booking start must be in the future'
+            raise BusinessRuleError(msg)
+
+    def _validate_no_overlap(self, booking: Booking) -> None:
+        for existing in self._booked:
+            if booking.start < existing.end and existing.start < booking.end:
+                msg = 'booking overlaps with existing booking'
+                raise IllegalStateError(msg)
+
+    def _validate_availability(self, booking: Booking) -> None:
+        booking_date = booking.start.date()
+        start_time = booking.start.time()
+        end_time = booking.end.time()
+
+        for override in self._overrides:
+            if override.date == booking_date:
+                for period in override.periods:
+                    if period.start <= start_time and end_time <= period.end:
+                        return
+                msg = 'booking is outside available override periods'
+                raise BusinessRuleError(msg)
+
+        for rule in self._rules:
+            if rule.weekday == booking.start.weekday():
+                for period in rule.periods:
+                    if period.start <= start_time and end_time <= period.end:
+                        return
+                msg = 'booking is outside available rule periods'
+                raise BusinessRuleError(msg)
+
+        msg = 'no availability rule or override found for this booking'
+        raise BusinessRuleError(msg)
+
+    def _validate_event_type_exists(self, booking: Booking) -> None:
+        for event_type in self._event_types:
+            if event_type.pk == booking.type_id:
+                return
+        msg = f'event type {booking.type_id} not found in schedule'
+        raise IntegrityError(msg)
+
+    def _validate_duration_matches(self, booking: Booking) -> None:
+        duration = int((booking.end - booking.start).total_seconds() // 60)
+        for event_type in self._event_types:
+            if event_type.pk == booking.type_id:
+                if event_type.duration != duration:
+                    msg = (
+                        f'booking duration {duration} min does not match '
+                        f'event type duration {event_type.duration} min'
+                    )
+                    raise BusinessRuleError(msg)
+                return

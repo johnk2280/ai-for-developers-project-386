@@ -1,9 +1,10 @@
-# ruff: noqa: DTZ001
-# ruff: noqa: ANN401
+# ruff: noqa: ANN401, DTZ011
 
 import uuid
 
+from datetime import date
 from datetime import datetime
+from datetime import time
 from typing import Any
 
 from backend.domain.declarations import BookingStatus
@@ -14,8 +15,9 @@ OWNER_ID = uuid.uuid4()
 TYPE_ID = uuid.uuid4()
 PLATFORM_ID = uuid.uuid4()
 
-START = datetime(2026, 6, 10, 9, 0)
-END = datetime(2026, 6, 10, 10, 0)
+_TODAY = date.today()
+START = datetime.combine(_TODAY, time(9, 0))
+END = datetime.combine(_TODAY, time(10, 0))
 
 
 def make_booking(**kwargs: Any) -> Booking:

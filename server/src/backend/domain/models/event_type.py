@@ -19,6 +19,14 @@ class EventType(DomainModel):
         self._validate_duration()
         self._validate_name()
 
+    @property
+    def pk(self) -> UUID:
+        return self._id
+
+    @property
+    def duration(self) -> int:
+        return self._duration
+
     def _validate_duration(self) -> None:
         if self._duration <= 0 or self._duration % 15 != 0:
             msg = 'duration must be a positive multiple of 15 minutes'

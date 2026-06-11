@@ -1,6 +1,7 @@
+import type { ReactElement } from 'react';
 import { AppRouter } from './providers/router';
 
-const App = () => (
+const App = (): ReactElement => (
   <div id="app">
     <AppRouter />
   </div>

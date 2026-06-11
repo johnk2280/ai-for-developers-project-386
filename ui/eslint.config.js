@@ -38,7 +38,7 @@ export default defineConfig([
     },
     rules: {
       'react/self-closing-comp': ['error', { component: true, html: true }],
-      '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true, allowTypedFunctionExpressions: true }],
+      '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true, allowTypedFunctionExpressions: true }],
       '@typescript-eslint/no-unused-vars': ['warn'],
       '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
     },

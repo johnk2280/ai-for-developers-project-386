@@ -1,1 +1,3 @@
-export const EventTypesPage = () => <div>EventTypesPage</div>;
+import type { ReactElement } from 'react';
+
+export const EventTypesPage = (): ReactElement => <div>EventTypesPage</div>;

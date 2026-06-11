@@ -15,11 +15,11 @@ class Booking(DomainModel):
         start: datetime,
         end: datetime,
         type_id: UUID,
-        reason: str,
         platform_id: UUID,
         url: str,
         guest_name: str,
         guest_email: str,
+        reason: str | None = None,
     ) -> None:
         self._id = id
         self._owner_id = owner_id

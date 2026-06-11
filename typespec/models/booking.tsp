@@ -12,7 +12,7 @@ model Booking {
     end: utcDateTime;
 
     typeId: string;
-    reason: string;
+    reason?: string;
     platformId: string;
     url: string;
     guestName: string;
@@ -27,7 +27,7 @@ model BookingCreate {
     end: utcDateTime;
 
     typeId: string;
-    reason: string;
+    reason?: string;
     platformId: string;
     url: string;
     guestName: string;

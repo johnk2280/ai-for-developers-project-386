@@ -16,6 +16,7 @@ dist-ssr
 src/shared/api/types.generated.ts
 coverage
 circleDep
+stats.html
 
 # Editor directories and files
 .vscode/*

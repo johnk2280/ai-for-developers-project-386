@@ -64,3 +64,65 @@ Never write implementation code without a corresponding test written first.
 - `zuban` (wraps pyright) in strict mode — all code must be fully typed
 - isort is configured via ruff: known first-party packages are `domain`, `infrastructure`, `service_layer`, `core`
 - Tests use `pytest-asyncio` with `asyncio_mode = "auto"` — no `@pytest.mark.asyncio` needed
+
+---
+
+## typespec/
+
+API contract defined in TypeSpec. Run all commands from `typespec/`.
+
+### Commands
+
+```bash
+npm install
+tsp compile .
+```
+
+Output lands in `typespec/tsp-output/schema/openapi.yaml`.
+
+### Structure
+
+- `models/` — TypeSpec model definitions
+- `routes/` — TypeSpec route definitions
+- `main.tsp` — entrypoint
+
+---
+
+## ui/
+
+React 18 frontend. Run all commands from `ui/`.
+
+### Commands
+
+```bash
+npm install
+npm run dev          # dev server at localhost:5173
+npm run build        # production build
+npm test             # Jest
+npm run lint         # ESLint
+npm run lint:fix     # ESLint + autofix
+npm run generate:api # regenerate types from OpenAPI spec
+```
+
+### Architecture
+
+Feature-Sliced Design (FSD). Import direction: `shared` → `entities` → `features` → `widgets` → `pages` → `app`. Never import upward.
+
+Entity slice: `api/` + `model/stores/` + `model/types/` + `index.ts`.
+Feature slice: `ui/FeatureName.tsx` + `index.ts`.
+Page slice: `ui/PageName.tsx` + `index.ts`.
+
+### Key files
+
+- `src/shared/api/api.ts` — axios instance (`$api`)
+- `src/shared/api/config/apiConfig.ts` — base URL, endpoints, timeout
+- `src/shared/api/types.generated.ts` — auto-generated, commit after `tsp compile . && npm run generate:api`
+- `src/app/providers/StoreProvider/config/RootStore.ts` — aggregates all entity stores
+- `src/app/providers/StoreProvider/config/RootStoreContext.ts` — `useStore()` hook
+
+### Code Style
+
+- ESLint v10 flat config, `explicit-function-return-type: error` — `ReactElement` for components
+- Single quotes, 4-space indent, semicolons
+- `camelCase` for variables/functions, `PascalCase` for types/classes/components/pages
+- MobX: `makeAutoObservable`; wrap all post-`await` mutations in `runInAction`

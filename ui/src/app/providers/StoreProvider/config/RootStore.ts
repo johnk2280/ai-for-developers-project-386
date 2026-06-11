@@ -1,8 +1,8 @@
-import { EventTypeStore } from '@entities/eventType';
-import { OwnerStore } from '@entities/owner';
-import { BookingStore } from '@entities/booking';
-import { ScheduleStore } from '@entities/schedule';
-import { MeetingPlatformStore } from '@entities/meetingPlatform';
+import { EventTypeStore } from '@entities/EventType';
+import { OwnerStore } from '@entities/Owner';
+import { BookingStore } from '@entities/Booking';
+import { ScheduleStore } from '@entities/Schedule';
+import { MeetingPlatformStore } from '@entities/MeetingPlatform';
 
 export class RootStore {
   eventTypes = new EventTypeStore();

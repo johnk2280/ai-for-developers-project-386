@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "mock": "prism mock typespec/tsp-output/schema/openapi.yaml --port 4010"
+  },
+  "devDependencies": {
+    "@stoplight/prism-cli": "^5.15.11"
+  }
+}

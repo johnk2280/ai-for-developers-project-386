@@ -11,11 +11,11 @@ export class BookingStore {
     makeAutoObservable(this);
   }
 
-  async fetchAll(): Promise<void> {
+  async fetchAll(ownerId: string): Promise<void> {
     this.isLoading = true;
     this.error = null;
     try {
-      const data = await bookingApi.fetchAll();
+      const data = await bookingApi.fetchAll(ownerId);
       runInAction(() => {
         this.bookings = data;
         this.isLoading = false;

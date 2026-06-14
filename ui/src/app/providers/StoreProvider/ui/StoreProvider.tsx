@@ -3,11 +3,11 @@ import { rootStore } from '../config/RootStore';
 import { RootStoreContext } from '../config/RootStoreContext';
 
 interface StoreProviderProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 export const StoreProvider = ({ children }: StoreProviderProps): ReactElement => (
-  <RootStoreContext.Provider value={rootStore}>
-    {children}
-  </RootStoreContext.Provider>
+    <RootStoreContext.Provider value={rootStore}>
+        {children}
+    </RootStoreContext.Provider>
 );

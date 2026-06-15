@@ -72,7 +72,8 @@ export class EventTypeStore {
         try {
             await eventTypeApi.remove(id);
             runInAction(() => {
-                this.eventTypes = this.eventTypes.filter((et) => et.id !== id);
+                const index = this.eventTypes.findIndex((et) => et.id === id);
+                if (index !== -1) this.eventTypes.splice(index, 1);
             });
         } catch (e) {
             runInAction(() => {

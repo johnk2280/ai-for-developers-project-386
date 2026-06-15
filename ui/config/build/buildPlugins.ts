@@ -6,11 +6,11 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import type { PluginOption } from 'vite';
 
 export function buildPlugins(): PluginOption[] {
-  return [
-    svgr(),
-    react(),
-    tsconfigPaths(),
-    circleDependency({ outputFilePath: './circleDep' }),
-    visualizer({ open: false, template: 'treemap', gzipSize: true }),
-  ];
+    return [
+        svgr(),
+        react(),
+        tsconfigPaths(),
+        circleDependency({ outputFilePath: './circleDep' }),
+        visualizer({ open: false, template: 'treemap', gzipSize: true }),
+    ];
 }

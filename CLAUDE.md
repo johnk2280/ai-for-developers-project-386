@@ -104,6 +104,23 @@ npm run lint:fix     # ESLint + autofix
 npm run generate:api # regenerate types from OpenAPI spec
 ```
 
+### Mock API (Prism)
+
+During development the backend is replaced by **Prism** — an OpenAPI mock server. Run from repo root:
+
+```bash
+npm run mock   # starts Prism at http://localhost:4010
+```
+
+The UI dev server points to `http://localhost:4010` by default (`VITE_API_URL` overrides this). Run both servers simultaneously: `npm run mock` + `npm run dev`.
+
+### UI Library
+
+**Mantine** (`@mantine/core`, `@mantine/hooks`). Setup:
+- `postcss.config.cjs` at `ui/` root — PostCSS preset required by Mantine
+- `@mantine/core/styles.css` imported in `src/main.tsx`
+- `MantineProvider` wraps the app in `src/main.tsx`
+
 ### Architecture
 
 Feature-Sliced Design (FSD). Import direction: `shared` → `entities` → `features` → `widgets` → `pages` → `app`. Never import upward.

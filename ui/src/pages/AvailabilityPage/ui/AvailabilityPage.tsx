@@ -1,15 +1,30 @@
-import type { ReactElement } from 'react';
-import { useEffect, useState } from 'react';
-import { observer } from 'mobx-react-lite';
+import { useStore } from '@/app/providers/StoreProvider';
+import type { AvailabilityOverrideCreate, AvailabilityRuleWrite } from '@entities/Schedule';
 import {
-    Title, Select, Stack, Group, Text, Switch, TextInput, Button,
-    ActionIcon, Divider, Card, Badge, Modal, Alert, Skeleton, Box,
+    ActionIcon,
+    Alert,
+    Badge,
+    Box,
+    Button,
+    Card,
+    Divider,
+    Group,
+    Modal,
+    Select,
+    Skeleton,
+    Stack,
+    Switch,
+    Text,
+    TextInput,
+    Title,
 } from '@mantine/core';
 import {
-    IconPlus, IconTrash, IconAlertCircle, IconClock,
+    IconAlertCircle, IconClock,
+    IconPlus, IconTrash,
 } from '@tabler/icons-react';
-import { useStore } from '@/app/providers/StoreProvider';
-import type { AvailabilityRuleWrite, AvailabilityOverrideCreate } from '@entities/Schedule';
+import { observer } from 'mobx-react-lite';
+import type { ReactElement } from 'react';
+import { useEffect, useState } from 'react';
 
 const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 

@@ -17,6 +17,7 @@ import { IconAlertCircle, IconCalendarEvent, IconPlus } from '@tabler/icons-reac
 import { observer } from 'mobx-react-lite';
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
+import styles from './EventTypesPage.module.css';
 
 export const EventTypesPage = observer((): ReactElement => {
     const { eventTypes: store } = useStore();
@@ -68,7 +69,7 @@ export const EventTypesPage = observer((): ReactElement => {
             ) : store.eventTypes.length === 0 ? (
                 <Center h={300}>
                     <Stack align="center" gap="sm">
-                        <IconCalendarEvent size={48} color="var(--mantine-color-gray-4)" />
+                        <IconCalendarEvent size={48} className={styles.emptyIcon} />
                         <Text c="dimmed" size="sm">No event types yet. Create your first one.</Text>
                     </Stack>
                 </Center>

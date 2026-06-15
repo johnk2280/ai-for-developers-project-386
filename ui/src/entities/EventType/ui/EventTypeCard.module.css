@@ -1,0 +1,15 @@
+.body {
+    flex: 1;
+}
+
+.durationBadge {
+    flex-shrink: 0;
+}
+
+.description {
+    flex: 1;
+}
+
+.actions {
+    border-top: 1px solid var(--mantine-color-gray-2);
+}
